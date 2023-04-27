@@ -15,9 +15,7 @@ public class GeneratePublicKey {
 
         KeyFactory keyFactory = KeyFactory.getInstance("EC");
 
-        PublicKey PUBLIC_KEY = keyFactory.generatePublic(publicKeySpec);
-
-        return PUBLIC_KEY;
+        return keyFactory.generatePublic(publicKeySpec);
     }
 
 }
