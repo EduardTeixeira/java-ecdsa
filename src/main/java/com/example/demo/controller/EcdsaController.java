@@ -1,52 +1,43 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.EcdsaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
-
 @RestController
-@RequestMapping("/v1/mtls")
+@RequestMapping("/v1/ecdsa")
 public class EcdsaController {
+
+    @Autowired
+    private EcdsaService ecdsaService;
 
     @GetMapping(value = "")
     public ResponseEntity<?> teste() {
-        String str = "mTLS Teste Controller";
+        String str = "Ecdsa Teste Controller";
         return new ResponseEntity<>(str, HttpStatus.OK);
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<?> mtlsTeste(
-            @RequestHeader(value = "Access-Signature", required = false) String accessSignature
+    public ResponseEntity<?> ecdsaPost(
+            @RequestBody String requestBody,
+            @RequestHeader(value = "Header-1", required = false) String header1,
+            @RequestHeader(value = "Header-2", required = false) String header2,
+            @RequestHeader(value = "Header-3", required = false) String header3,
+            @RequestHeader(value = "Header-4", required = false) String header4,
+            @RequestHeader(value = "Header-5", required = false) String header5,
+            @RequestHeader(value = "Header-6", required = false) String header6,
+            @RequestHeader(value = "Header-7", required = false) String header7
     ) {
 
-        try {
+        boolean result = ecdsaService.ecdsaVerify(requestBody, header1, header2, header3, header4, header5, header6, header7);
 
-            if(accessSignature.equals("null")){
-
-            }
-
-            System.out.println("access-signature: " + accessSignature);
-
-            byte[] xBytes = Base64.getUrlDecoder().decode("AbFCmkni9pvGC1o9uAOhPGfgveJrk9Y4NgtNHLyb6FtgwgMHXSMZPoFLsA03neFa1i2-36GnT_zTydSbyMZMS9Py".getBytes());
-            System.out.println(xBytes);
-
-            byte[] yBytes = Base64.getUrlDecoder().decode("AXR3qFe3LBJvY7pXrBw3bQdUP6ozsHZqa7VIFUVGnY5a7iakifA6QeGmtNbcGI9y32nJzHorDcYKLQ38BUbWd9JM".getBytes());
-            System.out.println(yBytes);
-
-            String curveName = "secp521r1";
-
-            return new ResponseEntity<String>("OK", HttpStatus.OK);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-
+        if (result == true) {
+            return new ResponseEntity<String>("Verificando a assinatura ::: " + result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Não autorizado. Resultado ::: " + result, HttpStatus.UNAUTHORIZED);
         }
-
     }
 
 }

@@ -14,23 +14,26 @@ public class EcdsaMainTest {
             static String algoritmo = "SHA256withECDSA";
 
             static String name = "secp521r1"; // "secp256r1";
-            static String nomeDaChave = "chave3";
+            static String nomeDaChave = "chave_ecdsa";
 
     public static void main(String[] args) {
 
         try {
 
+            /*
             String[] chaves = {nomeDaChave};
             EcdsaGeradorChaves ecdsaGeradorChaves = new EcdsaGeradorChaves();
             ecdsaGeradorChaves.gerarChavesArquivo(chaves);
+            */
 
+            /*
             String[] dadosSign = {nomeDaChave, "msg"};
             EcdsaSign ecdsaSign = new EcdsaSign();
             ecdsaSign.sign(dadosSign);
+             */
 
-            String[] dadosVerify = {nomeDaChave, "msg"};
             EcdsaVerify ecdsaVerify = new EcdsaVerify();
-            ecdsaVerify.verify(dadosVerify);
+            ecdsaVerify.verify("chave_ecdsa", "MEQCIDoko5M2uKg1B7dRR0pzhJ4uD3ez29F3hJaeCwNp5CAaAiBXqD6Y/MZslo86/XWUZEK6h0Qn3j9bFQn6ww9yE05h7w==", "msg");
 
 
             System.out.println("Finalizou...");

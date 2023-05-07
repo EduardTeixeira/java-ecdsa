@@ -1,44 +1,35 @@
 package com.example.demo.service.ecdsa;
 
-import java.math.BigInteger;
 import java.security.*;
 import java.security.spec.*;
-import java.security.interfaces.*;
 import java.io.*;
 
 public class EcdsaVerify {
 
-    public static void usage() {
-        System.err.println("Usage: Verify UserID input");
-        System.exit(1);
-    }
+    public static void verify(String publicKeyLocal, String assinatura, String inputFile) throws Exception {
 
-    public static void verify(String args[]) throws Exception {
-
-        // input file names
-        String UserID = args[0];
-        String input = args[1];
-        String sig = input + ".sig";
-
-        BigInteger WX, WY;
+        String input = inputFile + ".sig";
+        String sig = inputFile + ".sig";
 
         // get signer EC public key
-        String fname = UserID + ".public";
+        String fname = publicKeyLocal + ".public";
         File file = new File(fname);
         int len = (int) file.length();
         FileInputStream fis = new FileInputStream(file);
+
         byte b[] = new byte[len];
         int nbytes = fis.read(b);
+
         fis.close();
+
         if (nbytes != len) throw new Exception("bad read: " + fname);
 
-        X509EncodedKeySpec x509 = new X509EncodedKeySpec(b);
         KeyFactory kf = KeyFactory.getInstance("EC");
+        X509EncodedKeySpec x509 = new X509EncodedKeySpec(b);
         PublicKey pub = kf.generatePublic(x509);
 
         // initialize signature
         Signature s = Signature.getInstance("SHA256withECDSA");
-
         s.initVerify(pub);
 
         // read message
