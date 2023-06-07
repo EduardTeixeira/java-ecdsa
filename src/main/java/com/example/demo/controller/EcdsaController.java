@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.Normalizer;
+
 @RestController
 @RequestMapping("/v1/ecdsa")
 public class EcdsaController {
@@ -38,6 +40,13 @@ public class EcdsaController {
         } else {
             return new ResponseEntity<>("Não autorizado. Resultado ::: " + result, HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    public static void main(String[] args) {
+        String input = "ÁáÉéÍí";
+        String output = Normalizer.normalize(input, Normalizer.Form.NFD);
+        output = output.replaceAll("[^\\p{ASCII}]", "");
+        System.out.println(output);
     }
 
 }

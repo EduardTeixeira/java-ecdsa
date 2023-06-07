@@ -18,7 +18,7 @@ public class EcdsaService {
             String header4,
             String header5,
             String header6,
-            String header7
+            String assinatura
     ) {
 
         try {
@@ -29,7 +29,7 @@ public class EcdsaService {
             System.out.println("Header4: " + header4);
             System.out.println("Header5: " + header5);
             System.out.println("Header6: " + header6);
-            System.out.println("Header7: " + header7);
+            System.out.println("Header7: " + assinatura);
 
             if (
                     header1 == null ||
@@ -38,19 +38,16 @@ public class EcdsaService {
                             header4 == null ||
                             header5 == null ||
                             header6 == null ||
-                            header7 == null
+                            assinatura == null
             ) {
                 return false;
             }
 
-            // remover os espaços em branco da String
-            requestBody = requestBody.replaceAll("\\s", "");
+            String msgOriginal = header1;
 
-            String msgOriginal = header1 +  header2 + header3 +  header4 +  header5  + header6 + header7;
+            String publicKeyPem = "";
 
-            String publicKeyPem = "MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQB9q4hd3GOFk/lyA7qxTBNLBCwKOys/Uer8N/Czjt0neHOwzQKqbhDZDv8n9UC1bRVPSNdpS3iANtMQrydTJTum+gBTNaGazjP2oOBFgKi/CVT07eUt8CyuSl/cp4Y59p6saSGPPjf91fVAeIWjnnwAdUDzzsxZaoT2/Rw/YgaytQQmHc=";
-
-            return EcdsaPem.ecdsaVerify(ALGORITMO, publicKeyPem, msgOriginal, header1);
+            return EcdsaPem.ecdsaVerify(ALGORITMO, publicKeyPem, header1, assinatura);
 
         } catch (Exception e) {
 
